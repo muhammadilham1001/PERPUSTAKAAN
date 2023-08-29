@@ -25,6 +25,7 @@ use App\Http\Controllers\informasiController;
 
 Route::middleware('hakAkses')->group(function () {
     Route::get('/','App\Http\Controllers\dashboardController@index')->name('/');
+    Route::get('/dashboard-client','App\Http\Controllers\dashboard2Controller@index')->name('/dashboard-client');
     Route::get('/halaman-buku','App\Http\Controllers\bukuController@index')->name('halaman-buku');
     Route::get('/halaman-pengarang','App\Http\Controllers\pengarangController@index')->name('halaman-pengarang');
     Route::get('/halaman-penerbit','App\Http\Controllers\penerbitController@index')->name('halaman-penerbit');

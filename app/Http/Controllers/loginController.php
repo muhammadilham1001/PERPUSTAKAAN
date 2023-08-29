@@ -28,7 +28,7 @@ public function loginUser(Request $request){
             return redirect('/')->with('toast_success', 'Selamat datang, ' . $user->name . '!');
         } else {
            if ($user->status === 'accept'){
-            return redirect('/')->with('toast_success', 'Selamat datang, ' . $user->name . '!');
+            return redirect('/dashboard-client')->with('toast_success', 'Selamat datang, ' . $user->name . '!');
            } else if($user->status === 'pending'){
             Auth::logout();
             return redirect('log')->with('error','Akun anda sedang menunggu persetujuan.');
@@ -59,7 +59,7 @@ public function register() {
             'remember_token' => Str::random(60),
        ]);
 
-       return back()->with('success', 'berhasil melakukan register!');
+       return redirect('log')->with('success', 'berhasil melakukan register!');
     }
 
     public function logout(){

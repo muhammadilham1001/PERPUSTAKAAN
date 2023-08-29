@@ -29,6 +29,8 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Daftar Halaman:</h6>
+                <a class="collapse-item mb-1 {{ request()->is('halaman-petugas') ? 'active' : '' }}"
+                  href="{{ route('halaman-petugas') }}">Pendaftar</a>
                 <a class="collapse-item {{ request()->is('halaman-buku') ? 'active' : '' }}"
                     href="{{ route('halaman-buku') }}">Buku</a>
                 <a class="collapse-item {{ request()->is('halaman-anggota') ? 'active' : '' }}"

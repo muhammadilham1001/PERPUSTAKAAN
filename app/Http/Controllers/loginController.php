@@ -25,7 +25,7 @@ class loginController extends Controller
             $user = Auth::user()->name;
            return redirect('/')->with('toast_success', 'Selamat datang, ' . $user . '!');
         }
-        return redirect('login')->with('error', 'password atau email anda salah!');
+        return redirect('log')->with('error', 'password atau email anda salah!');
     }
 
     public function register(){
@@ -46,12 +46,12 @@ class loginController extends Controller
             'remember_token' => Str::random(60),
        ]);
 
-       return redirect('/login')->with('success', 'Anda berhasil melakukan register!');
+       return redirect('/log')->with('success', 'Anda berhasil melakukan register!');
     }
 
     public function logout(){
         Auth::logout();
-        return redirect('login')->with('success', 'Anda telah logout!');
+        return redirect('log')->with('success', 'Anda telah logout!');
     }
     
     public function reset(){
@@ -79,7 +79,7 @@ class loginController extends Controller
 
         event(new PasswordReset($user));
 
-        return redirect('/login')->with('success', 'Password anda berhasil direset');
+        return redirect('/log')->with('success', 'Password anda berhasil direset');
     
     }
 }

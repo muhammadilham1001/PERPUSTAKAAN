@@ -141,7 +141,7 @@ Route::resource('/peminjam', peminjamController::class);
 
 
 // controller login and register
-Route::get('/login', [loginController::class, 'login'])->name('login');
+Route::get('/log', [loginController::class, 'login'])->name('login');
 
 Route::post('/loginUser', [loginController::class, 'loginUser'])->name('loginUser');
 

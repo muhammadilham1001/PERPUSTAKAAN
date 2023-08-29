@@ -89,7 +89,7 @@
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                                 Data peminjam</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800 ml-4">
-                                                {{  $jumlah_peminjam}}</div>
+                                                {{  $jumlah_petugas}}</div>
                                         </a>
                                     </div>
                                     <div class="col-auto">

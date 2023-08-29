@@ -37,9 +37,9 @@
 
                 <div class="row">
                     <div class="card-body">
-                        <a href="/register"><button type="button" class="btn btn-success ml-1"
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#create" class="btn btn-success ml-1"
                                 style="margin-bottom: -57px">+
-                                Tambah</button></a>
+                                Tambah</button>
 
                         <div class="row justify-content-end mr-2 mb-3">
                             <form action="/halaman-petugas" method="GET"
@@ -153,11 +153,11 @@
                         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
                         <script>
                             function confirmDelete(event, id) {
-                                event.preventDefault(); // Menghentikan submit form
+                                event.preventDefault();
 
                                 Swal.fire({
-                                    title: 'Yakin ingin menghapus data ini?',
-                                    text: 'Data yang dihapus tidak dapat dikembalikan!',
+                                    title: 'Yakin ingin menghapus user ini?',
+                                    text: 'User akan dihapus?',
                                     icon: 'warning',
                                     showCancelButton: true,
                                     confirmButtonColor: '#3085d6',
@@ -166,9 +166,8 @@
                                     cancelButtonText: 'Batal'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        // Kode untuk melakukan penghapusan data di sini
                                         document.getElementById(`delete-form-${id}`)
-                                            .submit(); // Melanjutkan submit form setelah konfirmasi
+                                            .submit(); 
                                     }
                                 });
                             }
@@ -178,7 +177,70 @@
 
 
                 </div>
+                <div class="modal fade" id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Pendaftar</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/registerUser" method="POST" class="user">
+                        @csrf
+                           <div class="form-group row">
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control form-control-user"
+                                            id="exampleFirstName" name="name" placeholder="Masukan Username"
+                                            required>
+                                    </div>
 
+                                </div>
+                                <div class="form-group" style="margin-top: -10px">
+                                    <input type="email" class="form-control form-control-user" name="email"
+                                        id="exampleInputEmail" placeholder="Email Address" required>
+                                </div>
+                                @error('email')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+
+                                <div class="form-group row">
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        <input type="password" class="form-control form-control-user" id="password"
+                                            placeholder="Password" name="password" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <div class="col-sm-12 mb-3 mb-sm-0">
+                                        <input type="password" class="form-control form-control-user"
+                                            id="konfirmasi_password" placeholder="Konfirmasi Password"
+                                            name="konfirmasi_password" oninput="check(this)" required>
+                                        <span id="message"></span>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    function check(input) {
+                                        if (input.value !== document.getElementById('password').value) {
+                                            input.setCustomValidity('konfirmasi password tidak valid');
+                                            document.getElementById('message').innerHTML = '';
+                                        } else {
+                                            input.setCustomValidity('');
+                                            document.getElementById('message').innerHTML = '';
+                                        }
+                                    }
+                                </script>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                </div>
 
             </div>
             <!-- End of Main Content -->

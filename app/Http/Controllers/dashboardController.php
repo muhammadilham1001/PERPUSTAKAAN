@@ -18,7 +18,7 @@ class dashboardController extends Controller
         $jumlah_anggota = anggota::all()->count();
         $jumlah_penerbit = penerbit::all()->count();
         $jumlah_pengarang = pengarang::all()->count();
-        $jumlah_petugas = User::all()->count();
+        $jumlah_petugas = User::where('role','user')->count();
         $jumlah_peminjam = Peminjam::all()->count();
         $jumlah_genre = genre::all()->count();
         return view('dashboard', compact('jumlah_buku', 'jumlah_anggota', 'jumlah_penerbit', 'jumlah_pengarang','jumlah_petugas', 'jumlah_genre','jumlah_peminjam'));

@@ -45,52 +45,57 @@ class bukuController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $this->validate($request,[
-            'judul' => 'required',
-            'pengarang' => 'required',
-            'penerbit' => 'required',
-            'judul' => 'required|min:5|max:50',
-            'tahun_terbit' => 'required|',
-            'gambar' => 'required|max:3072|mimes:jpeg,jpg,png,',
-        ],[
-            'judul.required' => 'Bidang judul wajib diisi.',
-            'judul.min' => 'Minimal harus 5 karakter',
-            'judul.max' => 'Maximal harus 50 karakter',
-            'pengarang.required' => 'Bidang pengarang wajib diisi.',
-            'penerbit.required' => 'Bidang penerbit wajib diisi.',
-            'tahun_terbit.required' => 'Bidang tahun terbit wajib diisi.',
-            'gambar.required' => 'Bidang gambar wajib diisi.',
-            'gambar.max' => 'ukuran gambar maksimal 3Mb',
-            'gambar.mimes' => 'Yang anda masukan bukan ekstensi jpeg,jpg,png',
+        public function store(Request $request)
+        {
+            $this->validate($request,[
+                'judul' => 'required',
+                'pengarang' => 'required',
+                'penerbit' => 'required',
+                'judul' => 'required|min:5|max:50',
+                'tahun_terbit' => 'required|',
+                'gambar' => 'required|max:3072|mimes:jpeg,jpg,png,',
+            ],[
+                'judul.required' => 'Bidang judul wajib diisi.',
+                'judul.min' => 'Minimal harus 5 karakter',
+                'judul.max' => 'Maximal harus 50 karakter',
+                'pengarang.required' => 'Bidang pengarang wajib diisi.',
+                'penerbit.required' => 'Bidang penerbit wajib diisi.',
+                'tahun_terbit.required' => 'Bidang tahun terbit wajib diisi.',
+                'gambar.required' => 'Bidang gambar wajib diisi.',
+                'gambar.max' => 'ukuran gambar maksimal 3Mb',
+                'gambar.mimes' => 'Yang anda masukan bukan ekstensi jpeg,jpg,png',
 
-        ]
-    );
-
-
-        $nm = $request->gambar;
-        $namaFile = $nm->hashName();
-
-        $dtUpload = new buku;
-        $dtUpload->judul = $request->judul;
-        $dtUpload->pengarang = $request->pengarang;
-        $dtUpload->penerbit = $request->penerbit;
-        $dtUpload->genre_id = $request->genre_id;
-        $dtUpload->tahun_terbit = $request->tahun_terbit;
-        $dtUpload->gambar = $namaFile;
-
-        $nm->move(public_path().'/template/img', $namaFile);
-        $dtUpload->save();
-        $jumlahNotifikasi = Buku::where('created_at', '>', Carbon::now()->subDays(7))->count();
-
-        return redirect('halaman-buku')->with('success', 'Data Berhasil Tersimpan!')->with('jumlahNotifikasi', $jumlahNotifikasi);
-
-        session()->flash('success', 'Data buku berhasil ditambahkan!');
+            ]
+        );
 
 
-      return redirect('halaman-buku')->with('success', 'Data Berhasil Tersimpan!');
-    }
+            $nm = $request->gambar;
+            $np = $request->isi;
+            $namaFile = $nm->hashName();
+            $isi = $np->hashName();
+
+            $dtUpload = new buku;
+            $dtUpload->judul = $request->judul;
+            $dtUpload->pengarang = $request->pengarang;
+            $dtUpload->penerbit = $request->penerbit;
+            $dtUpload->genre_id = $request->genre_id;
+            $dtUpload->tahun_terbit = $request->tahun_terbit;
+            $dtUpload->gambar = $namaFile;
+            $dtUpload->isi = $isi;
+
+            $nm->move(public_path().'/template/img', $namaFile);
+            $np->move(public_path().'/template/img', $isi);
+
+            $dtUpload->save();
+            $jumlahNotifikasi = Buku::where('created_at', '>', Carbon::now()->subDays(7))->count();
+
+            return redirect('halaman-buku')->with('success', 'Data Berhasil Tersimpan!')->with('jumlahNotifikasi', $jumlahNotifikasi);
+
+            session()->flash('success', 'Data buku berhasil ditambahkan!');
+
+
+        return redirect('halaman-buku')->with('success', 'Data Berhasil Tersimpan!');
+        }
 
     /**
      * Display the specified resource.
@@ -137,6 +142,7 @@ class bukuController extends Controller
 
         $ubah = buku::findorfail($id);
         $awal = $ubah->gambar;
+        $akhir = $ubah->isi;
 
         if ($request->hasFile('gambar')) {
             if (File::exists(public_path(). '/template/img/'.$awal)) {
@@ -146,6 +152,14 @@ class bukuController extends Controller
                 $request->gambar->move(public_path().'/template/img', $awal); 
             }
         }
+        if ($request->hasFile('isi')) {
+            if (File::exists(public_path(). '/template/img/'.$akhir)) {
+                File::delete(public_path().'/template/img/'.$akhir);
+                
+                $akhir = $request->isi->hashName();
+                $request->isi->move(public_path().'/template/img', $akhir); 
+            }
+        }
         $edit = [
             'judul' => $request['judul'],
             'pengarang' => $request['pengarang'],
@@ -153,6 +167,7 @@ class bukuController extends Controller
             'genre_id' => $request['genre_id'],
             'tahun_terbit' => $request['tahun_terbit'],
             'gambar' => $awal,
+            'isi' => $akhir
         ];
         $ubah->update($edit);
             

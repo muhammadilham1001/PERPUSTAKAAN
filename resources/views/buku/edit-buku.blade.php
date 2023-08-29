@@ -91,11 +91,20 @@
                             @enderror
 
                             <div class="mb-4">
-                                <label for="formFile" class="form-label">Edit gambar Buku :</label><br>
+                                <label for="formFile" class="form-label">Edit Cover Buku :</label><br>
                                 <img src="{{ asset('template/img/' . $edit->gambar) }}" width="10%" height="10%"
                                     alt="">
                                 <input class="form-control mt-3" type="file" id="formFile" name="gambar"
                                     value="{{ $edit->gambar }}">
+                            </div>
+                            @error('gambar')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+
+                             <div class="mb-4">
+                                <label for="formFile" class="form-label">Edit Buku :</label><br>
+                                <input class="form-control mt-3" type="file" id="formFile" name="isi"
+                                    value="{{ $edit->isi }}">
                             </div>
                             @error('gambar')
                                 <div class="alert alert-danger">{{ $message }}</div>

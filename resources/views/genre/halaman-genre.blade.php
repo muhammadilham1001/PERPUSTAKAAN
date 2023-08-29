@@ -36,10 +36,9 @@
 
 
                 <div class="row">
-                    <div class="card-body">
-                        <a href="{{ route('tambah-genre') }}"><button type="button" class="btn btn-success  ml-1"
+                    <div class="card-body"><button type="button"  data-bs-toggle="modal" data-bs-target="#create" class="btn btn-success  ml-1"
                                 style="margin-bottom: -57px">+
-                                Tambah Genre</button></a>
+                                Tambah Genre</button>
 
                         <div class="row justify-content-end mr-2 mb-3">
                             <form action="/halaman-genre" method="GET"
@@ -58,6 +57,38 @@
                             </form>
                         </div>
 
+                        <div class="modal fade" id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Genre</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">close</button>
+                                </div>
+                                <div class="modal-body">
+                                    
+                        <form action="{{ route('simpan-genre') }}" method="post">
+                            {{ csrf_field() }}
+                            <div class="input-group mb-4">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-book"></i></span>
+                                <input type="text" class="form-control" placeholder="Masukan Nama Genre"
+                                    aria-label="judul" aria-describedby="basic-addon1" name="genre"
+                                    {{ old('genre') }}>
+                            </div>
+                            @error('genre')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+
+                  
+
                         <table class="table table-hover text-center justify-content-center">
                             <thead class="justif-content-end" style="font-weight: bold">
                                 <tr>
@@ -74,9 +105,9 @@
                                             <td>{{ $index + $dtgenre->firstItem() }}</td>
                                             <td>{{ $item->genre }}</td>
                                             <td class="d-flex justify-content-around">
-                                                <a href="{{ url('edit-genre', $item->id) }}"><button type="submit"
-                                                        class="btn btn-warning" style="margin-right: -79px;"><i
-                                                            class="fas fa-pen"></i></button></a>
+                                            <button type="submit"
+                                                        class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit{{ $item->id }}" style="margin-right: -79px;"><i
+                                                            class="fas fa-pen"></i></button>
                                                 <form action="/delete-genre/{{ $item->id }}" method="POST"
                                                     class="delete-form" id="delete-form-{{ $item->id }}">
                                                     @csrf
@@ -91,6 +122,36 @@
                                         </tr>
                                     </tbody>
                                     <?php $i++; ?>
+                        <div class="modal fade" id="edit{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Genre</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">close</button>
+                                </div>
+                                <div class="modal-body">
+                                    
+                        <form action="{{ route('update-genre', $item->id) }}" method="post">
+                            {{ csrf_field() }}
+                            @method('PUT')
+                            <div class="input-group mb-4">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-book"></i></span>
+                                <input type="text" class="form-control" placeholder="Masukan Nama Genre"
+                                    aria-label="judul" aria-describedby="basic-addon1" value="{{ $item->genre}}" name="genre"
+                                    {{ old('genre') }}>
+                            </div>
+                            @error('genre')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
                                 @endforeach
                             @else
                                 <tr>

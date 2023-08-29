@@ -59,7 +59,7 @@ public function register() {
             'remember_token' => Str::random(60),
        ]);
 
-       return redirect('/log')->with('success', 'Anda berhasil melakukan register!');
+       return back()->with('success', 'berhasil melakukan register!');
     }
 
     public function logout(){

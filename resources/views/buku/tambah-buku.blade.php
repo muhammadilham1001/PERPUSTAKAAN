@@ -91,11 +91,21 @@
                             @enderror
 
                             <div class="mb-4">
-                                <label for="formFile" class="form-label">Masukan gambar Buku :</label>
+                                <label for="formFile" class="form-label">Masukan Cover Buku :</label>
                                 <input class="form-control" type="file" id="formFile" name="gambar"
                                     value="{{ old('gambar') }}">
                             </div>
                             @error('gambar')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+
+                            
+                            <div class="mb-4">
+                                <label for="formFile" class="form-label">Masukan Buku Pdf</label>
+                                <input class="form-control" type="file" id="formFile" name="isi"
+                                    value="{{ old('isi') }}">
+                            </div>
+                            @error('isi')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
 

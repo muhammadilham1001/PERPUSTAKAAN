@@ -19,6 +19,7 @@ return new class extends Migration
             $table->BigInteger('genre_id')->index();
             $table->string('tahun_terbit', 100);
             $table->string('gambar', 225)->nullable();
+            $table->string('isi', 225)->nullable();
             $table->timestamps();
         });
     }

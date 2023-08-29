@@ -15,22 +15,33 @@ class loginController extends Controller
         return view('login');
     }
 
-    public function loginUser(Request $request){
-        $this->validate($request,[
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+public function loginUser(Request $request){
+    $this->validate($request,[
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if (Auth::attempt($request->only('email','password'))) {
-            $user = Auth::user()->name;
-           return redirect('/')->with('toast_success', 'Selamat datang, ' . $user . '!');
+    $credentials = $request->only('email', 'password');
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user(); 
+        if ($user->role === 'admin') {
+            return redirect('/')->with('toast_success', 'Selamat datang, ' . $user->name . '!');
+        } else {
+           if ($user->status === 'accept'){
+            return redirect('/')->with('toast_success', 'Selamat datang, ' . $user->name . '!');
+           } else if($user->status === 'pending'){
+            Auth::logout();
+            return redirect('log')->with('error','Akun anda sedang menunggu persetujuan.');
+           }
         }
+    } 
         return redirect('log')->with('error', 'password atau email anda salah!');
-    }
+}
 
-    public function register(){
-        return view('register');
-    }
+public function register() {
+    return view('register');
+}
+
 
     public function registerUser(Request $request){
         $this->validate($request,[
@@ -41,6 +52,8 @@ class loginController extends Controller
         
         User::create([
             'name' => $request->name,
+            'status' => 'pending',
+            'role' => 'user',
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'remember_token' => Str::random(60),

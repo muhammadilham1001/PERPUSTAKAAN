@@ -130,7 +130,7 @@ Route::resource('/anggota', App\Http\Controllers\anggotaController::class);
 
 Route::post('/simpan-peminjam','App\Http\Controllers\peminjammController@store')->name('simpan-peminjam');
 
-Route::put('/update-peminjam/{id}','App\Http\Controllers\peminjammController@update')->name('update-peminjam');
+Route::put('/update-peminjam/{id}','lo\Http\Controllers\peminjammController@update')->name('update-peminjam');
 
 Route::put('/selesai-peminjam/{id}','App\Http\Controllers\peminjammController@done')->name('selesai-peminjam');
 

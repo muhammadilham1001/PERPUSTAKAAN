@@ -30,7 +30,7 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Data Petugas Perpustakaan</h1>
+                    <h1 class="h3 mb-4 text-gray-800">Pendaftar</h1>
                     <hr style="margin-bottom: 10px">
                 </div>
 
@@ -39,7 +39,7 @@
                     <div class="card-body">
                         <a href="/register"><button type="button" class="btn btn-success ml-1"
                                 style="margin-bottom: -57px">+
-                                Tambah Petugas</button></a>
+                                Tambah</button></a>
 
                         <div class="row justify-content-end mr-2 mb-3">
                             <form action="/halaman-petugas" method="GET"
@@ -62,37 +62,93 @@
                             <thead class="" style="font-weight: bold">
                                 <td>No</td>
                                 <td>Nama</td>
+                                <td>Status</td>
                                 <td>Email</td>
                                 <td>Aksi</td>
                             </thead>
                             <?php $i = 1; ?>
                             @if (count($users) != 0)
                                 @foreach ($users as $index => $item)
+                                @if ($item->role === 'user')
                                     <tbody class="table-striped">
                                         <td>{{ $index + $users->firstItem() }}</td>
                                         <td>{{ $item->name }}</td>
+                                        <td>{{ $item->status }}</td>
                                         <td>{{ $item->email }}</td>
                                         <td>
                                             <form action="/delete-petugas/{{ $item->id }}" method="POST"
                                                 class="delete-form" id="delete-form-{{ $item->id }}">
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#data-{{ $item->id }}">
+                                                   <i class="fas fa-eye"></i>
+                                            </button>
                                                 @csrf
                                                 @method('delete')
                                                 <button type="submit" class="btn btn-danger"
-                                                    onclick="confirmDelete(event, {{ $item->id }})">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
+                                                onclick="confirmDelete(event, {{ $item->id }})">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                             </form>
                                         </td>
                                     </tbody>
+                                    @endif
                                     <?php $i++; ?>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td colspan="4">Tidak ada data</td>
-                                </tr>
-                            @endif
-                        </table>
+                                    <div class="modal fade" id="data-{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Pendaftar</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">close</button>
+                                        </div>
+                                        <div class="modal-body">
+                                         <form action="/resetUser" method="POST" class="user">
+                                            @csrf
+                                            <div class="w-50">
+                                                <label for="">Nama&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email</label>
+                                                <input type="text" class="form-control"  value="{{ $item->name }}" id="">
+                                            </div>
+                                            <div class="w-50" style="margin-left: 15em; margin-top: -2.4em;">
+                                                <input type="text" class="form-control" name="email" value="{{ $item->email }}" id="">
+                                            </div><br>
+                                             <div class="w-50">
+                                                <label for="">Password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Confirm</label>
+                                                <input type="password" class="form-control" name="password" placeholder="Masukkan password baru" id="">
+                                            </div>
+                                             <div class="w-50" style="margin-left: 15em; margin-top: -2.3em;">
+                                                <input type="password" class="form-control" name="konfirmasi_password"  placeholder="Konfirmasi Password" id="">
+                                            </div><br>
+                                    <script>
+                                    function check(input) {
+                                        if (input.value !== document.getElementById('password').value) {
+                                            input.setCustomValidity('konfirmasi password tidak valid');
+                                            document.getElementById('message').innerHTML = '';
+                                        } else {
+                                            input.setCustomValidity('');
+                                            document.getElementById('message').innerHTML = '';
+                                        }
+                                    }
+                                </script>
+                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Simpan</button>
+                                            </form>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    @endforeach
+                                    @else
+                                    <tr>
+                                        <td colspan="4">Tidak ada data</td>
+                                    </tr>
+                                    @endif
+                                </table>
+                               
                         {{ $users->appends(['search' => request('search')])->links() }}
+
+
+                      
 
                         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
                         <script>
@@ -146,6 +202,7 @@
     @include('template.logout')
 
     @include('template.script')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     @include('sweetalert::alert')
 
 

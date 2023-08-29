@@ -88,11 +88,12 @@ public function register() {
 
         $user->password = bcrypt($request->password);
         $user->setRememberToken(Str::random(60));
+        $user->status = 'accept';
         $user->save();
 
         event(new PasswordReset($user));
 
-        return redirect('/log')->with('success', 'Password anda berhasil direset');
+        return back()->with('success', 'Password berhasil direset');
     
     }
 }

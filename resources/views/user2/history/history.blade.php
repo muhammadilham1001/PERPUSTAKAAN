@@ -30,7 +30,7 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Data Genre Perpustakaan</h1>
+                    <h1 class="h3 mb-4 text-gray-800">History</h1>
                     <hr style="margin-bottom: 10px">
                 </div>
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -7,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class hakAkses
+class HakAdmin
 {
     /**
      * Handle an incoming request.
@@ -16,15 +15,13 @@ class hakAkses
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Cek apakah pengguna masuk
         if (Auth::check()) {
-            // Periksa apakah pengguna memiliki peran (role) sebagai admin
-            if (Auth::user()->role === 'admin') {
-                // Jika pengguna adalah admin, arahkan mereka ke halaman sebelumnya
-                return redirect()->back();
+            // Periksa peran pengguna
+            $user = $request->user();
+            if ($user->role === 'admin') {
+                return $next($request);
             }
-
-            // Jika bukan admin, izinkan akses ke halaman
-            return $next($request);
         }
 
         return redirect('log');

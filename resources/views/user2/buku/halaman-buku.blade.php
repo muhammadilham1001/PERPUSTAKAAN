@@ -70,7 +70,7 @@
                                 <td>Aksi</td>
                             </thead>
                             <?php $i = 1; ?>
-                            @if (count($buku) != 0)
+                            {{-- @if (count($buku) != 0)
                                 @foreach ($buku as $index => $item)
                                     <tbody class="table-striped">
                                         <td>{{ $index + $buku->firstItem() }}</td>
@@ -105,7 +105,7 @@
                                 </tr>
                             @endif
                         </table>
-                        {{ $buku->appends(['search' => request('search')])->links() }}
+                        {{ $buku->appends(['search' => request('search')])->links() }} --}}
 
                         {{-- menambahkan konfirmasi delete pakai sweet alert --}}
                         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
